@@ -1,7 +1,6 @@
-var http = require('http');
+var fs = require('fs');
 
-http.createServer(function(request, response) {
-  response.writeHead(200);
-  response.write('Hello, this is Troy');
-  response.end();
-}).listen(8080);
+fs.readFile('index.html', function(err,contents) {
+  console.log(contents);
+});
+
