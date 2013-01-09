@@ -1,0 +1,14 @@
+{
+  "name": "code-school-node-exercises",
+  "version": "1.0.0",
+  "description": "Code School level 5 exercises",
+  "author": "Troy Murray <troy.murray@gmail.com>",
+  "scripts": {
+    "preinstall": "npm i -g prettyjson"
+  },
+  "dependencies": {
+    "express": "3.0.x",
+    "prettyjson": "0.7.0"
+  },
+  "engine": "node 0.8.x"
+}
