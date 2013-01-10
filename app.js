@@ -1,33 +1,41 @@
-var fs = require('fs');
-var http = require('http');
-var os = require('os');
+var url = require('url');
+var request = require('request');
+var express = require('express');
+var ejs = require('ejs');
 
-var server = http.createServer(function(request, response) {
-  var newFile = fs.createWriteStream("readme_copy.md");
-  var fileBytes = request.headers['content-length'];
-  var uploadedBytes = 0;
+var app = express();
 
-  request.pipe(newFile);
+app.get('/', function(req, response) {
+  options = {
+    protocol: "http:",
+    host: "search.twitter.com",
+    pathname: '/search.json',
+    query: { q: "codeschool"}
+  };
 
-  request.on('data', function(chunk) {
-    uploadedBytes += chunk.length;
-    var progress = (uploadedBytes / fileBytes) * 100;
-    response.write("progress: " + parseInt(progress,10) + "%\n");
+  var searchURL = url.format(options);
+
+  request(searchURL, function(err, res, body) {
+    var tweets = JSON.parse(body).results;
+    response.render('tweets.ejs', {tweets: tweets, name: 'codeschool'});
   });
-
-  request.on('end', function() {
-    response.end('uploaded!');
-  });
-}).listen(8080);
-
-server.on('connection', function() {
-  console.log('New connection established!');
-  console.log('This hostname is ' + os.hostname());
-  console.log('This type is ' + os.type());
-  console.log('This platform is ' + os.platform());
-  console.log('This architecture is ' + os.arch());
-  console.log('This release is ' + os.release());
-  console.log('This uptime is ' + os.uptime());
-  console.log('This total memory is ' + os.totalmem());
-  console.log('This free memory is ' + os.freemem());
 });
+  
+app.get('/:username', function(req, response) {
+  var username = req.params.username;
+  options = {
+    protocol: "http:",
+    host: "search.twitter.com",
+    pathname: '/search.json',
+    query: { q: username}
+  };
+
+  var searchURL = url.format(options);
+
+  request(searchURL, function(err, res, body) {
+    var tweets = JSON.parse(body).results;
+    response.render('tweets.ejs', {tweets: tweets, name: username});
+  });
+});
+  
+app.listen(8080);
