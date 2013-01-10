@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My Tweets</title>
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <h3>Tweets for @<%= name %></h3>
+    <ul>
+      <% tweets.forEach(function(tweet){ %>
+        <li><%= tweet.text %></li>
+      <% }); %>
+    </ul>
+  </body>
+</html>
+
+
